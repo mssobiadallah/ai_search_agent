@@ -7,7 +7,6 @@ from langchain_deepseek import ChatDeepSeek
 load_dotenv()
 
 
-
 def main():
     chat_model = os.environ.get("DEEPSEEK_MODEL")
     information = """
@@ -17,17 +16,21 @@ def main():
     Musk was the largest donor in the 2024 U.S. presidential election, where he supported Donald Trump. After Trump was inaugurated in January 2025, Musk was Senior Advisor to the President and the de facto head of the Department of Government Efficiency (DOGE). Musk left the Trump administration in May 2025 and returned to managing his companies; shortly thereafter he had a public feud with Trump.
     Musk is a supporter of global far-right politics, figures, and political parties. His political activities, statements and views have made him a polarizing figure. He has been criticized for making unscientific and misleading statements, including spreading COVID-19 misinformation, promoting conspiracy theories, and affirming antisemitic, white nationalist, racist, and transphobic comments. His acquisition of Twitter was controversial because, following his pledge to decrease censorship, there was an increase in hate speech and misinformation on the service. His role in the second Trump administration attracted public backlash, particularly in response to DOGE and its cuts to the US Agency for International Development (USAID).
     """
-    summary_templete =""" give the information {information} about a person I want to create
+    summary_templete = """ give the information {information} about a person I want to create
     1. A Short summary
     2. Interest fact about him
     """
-    summary_prompt_templete=PromptTemplate(input_variables=[information] ,template= summary_templete)
+    summary_prompt_templete = PromptTemplate(
+        input_variables=[information], template=summary_templete
+    )
 
-    llm = ChatDeepSeek( model=str(chat_model) ,temperature=0 )
+    llm = ChatDeepSeek(model=str(chat_model), temperature=0)
 
     chain = summary_prompt_templete | llm
 
-    response =chain.invoke(input={'information':information})
+    response = chain.invoke(input={"information": information})
 
     print(response.content)
+
+
 main()

@@ -5,33 +5,43 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_deepseek import ChatDeepSeek
+from tavily import TavilyClient
 
 load_dotenv()
 chat_model = os.environ.get("DEEPSEEK_MODEL")
+tavily_key = os.environ.get("TAVILY_SEARCH")
 
 
 @tool
-def search(query:str) -> str :
+def search(query: str) -> str:
     """Tool that search over the internet
     Args:
-        query: the query to search for 
+        query: the query to search for
     Returns:
         The search results
     """
     print(f"search for {query}")
-    return "Tokyo weather is Sunny"
+    tavily_client = TavilyClient(api_key="tvly-YOUR_API_KEY")
+    response = tavily_client.search(query)
+
+    print(response)
+    return "24"
 
 
 def main():
-    
-    llm = ChatDeepSeek( model=str(chat_model) ,temperature=0 )
 
-    tool=[search]
+    llm = ChatDeepSeek(model=str(chat_model), temperature=0)
 
-    agent =create_agent(model=llm ,tools =tool)
-    response=agent.invoke({"messages": [HumanMessage(content="what the weather in tokyo")]})
+    tool = [search]
+
+    agent = create_agent(model=llm, tools=tool)
+    response = agent.invoke(
+        {"messages": [HumanMessage(content="what the weather in tokyo")]}
+    )
     # result = agent.invoke({"messages": [{"role": "user", "content": "Summarize AI trends"}]})
 
-    print(response['messages'])
-if __name__ == '__main__':
+    print(response["messages"])
+
+
+if __name__ == "__main__":
     main()
