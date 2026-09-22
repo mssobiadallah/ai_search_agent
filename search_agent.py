@@ -20,12 +20,11 @@ def search(query: str) -> str:
     Returns:
         The search results
     """
-    print(f"search for {query}")
-    tavily_client = TavilyClient(api_key="tvly-YOUR_API_KEY")
+
+    tavily_client = TavilyClient(api_key=tavily_key)
     response = tavily_client.search(query)
 
-    print(response)
-    return "24"
+    return str(response)
 
 
 def main():
