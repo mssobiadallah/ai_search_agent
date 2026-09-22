@@ -32,6 +32,6 @@ def main():
     response=agent.invoke({"messages": [HumanMessage(content="what the weather in tokyo")]})
     # result = agent.invoke({"messages": [{"role": "user", "content": "Summarize AI trends"}]})
 
-    print(response)
+    print(response['messages'])
 if __name__ == '__main__':
     main()
